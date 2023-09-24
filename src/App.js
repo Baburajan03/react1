@@ -6,6 +6,8 @@
 // }
 // export default App;
 
+// import { Component } from "react"
+
 // import React from 'react'
 
 // function Hello(){
@@ -162,37 +164,143 @@
 // export default App
 
 
-import React from 'react'
+// import React from 'react'
 
-function Note({note}){
+// function Note({note}){
   
-  return(
-  <li>
-    {note.contents} {note.important && '★'}
-  </li>
-  )
-}
+//   return(
+//   <li>
+//     {note.contents} {note.important && '★'}
+//   </li>
+//   )
+// }
 
-function App({notes}) {
-  // const {notes} = props
+// function App({notes}) {
+//   // const {notes} = props
 
-  const addNote = (event) => {
-    event.preventDefault();
-    console.log(event.target)
-  }
+//   const addNote = (event) => {
+//     event.preventDefault();
+//     console.log(event.target)
+//   }
  
-  return (
-    <div>
-      <h1>Notes</h1>
-      <ul>
-        {notes.map(note => <Note key ={note.id} note = {note}/>)}
-      </ul>
-      <form onSubmit={addNote}>
-        <input />
-        <button type='submit'>Save</button>
-      </form>
-    </div>
-  )
+//   return (
+//     <div>
+//       <h1>Notes</h1>
+//       <ul>
+//         {notes.map(note => <Note key ={note.id} note = {note}/>)}
+//       </ul>
+//       <form onSubmit={addNote}>
+//         <input />
+//         <button type='submit'>Save</button>
+//       </form>
+//     </div>
+//   )
+// }
+
+// export default App
+
+// Topic : class commponent
+
+// import { Component }  from "react";
+
+// class App extends Component {
+// render() {
+//   return <div>Hello World</div>
+// }
+// }
+
+// export default App
+
+// TOPIC : PASSING PROPS IN FUNCTION COMPONENT
+
+// import React from 'react'
+
+// function Hello(props){
+//   return <div>Hey! {props.name}</div>
+// }
+
+// function App() {
+//   return (
+//     <div>
+//       <Hello  name = {'babu'}/>
+//     </div>
+//   )
+// }
+
+// export default App
+
+// TOPIC : PASSING PROPS IN CLASS Component
+
+// import { Component }  from "react";
+
+// class Hello extends Component{
+//   render(){
+//     const {name} = this.props
+//     return <div>
+//       {/* Hello! {this.props.name} */}
+//       Hello! {name}
+//     </div>
+//   }
+// }
+
+// class App extends Component {
+// render() {
+//   return <div>
+//     <Hello name = {'babu'}/>
+//   </div>
+// }
+// }
+// export default App 
+
+// TOPIC: STATEFUL COMPONENT
+
+
+// import React, { Component } from 'react'
+
+
+// export class App extends Component {
+
+//   constructor(props) {
+//     super(props);
+//     this.state = {
+//       count : 0,
+//     };
+//   }
+  
+//   handleClick = () => {
+//     this.setState((prevState) => ({
+//       count : prevState.count + 1,
+//     }));
+//   }
+  
+//   render() {
+//     return (
+//       <div>
+//         <p>Count: {this.state.count}</p>
+//         <button onClick={this.handleClick}>plus</button>
+//         <button>Minus</button>
+//         <button>Zero</button>
+//       </div>
+//     )
+//   }
+// }
+
+// export default App
+
+// TOPIC : REUSABLE COMPONENT
+
+import React, { Component } from 'react'
+import Hello from './Components/Hello'
+
+
+export class App extends Component {
+  render() {
+    return (
+      <div>
+        <Hello />
+      </div>
+    )
+  }
 }
 
 export default App
