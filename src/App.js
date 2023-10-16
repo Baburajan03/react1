@@ -1,212 +1,120 @@
-// Day 6 : REACT ROUTER
+// DAY 8
 
-// WITHOUT REACT ROUTER
+// TOPIC : PROPS DRILLING
 
-// import React, {useState} from 'react'
-
-// function Home(){
+// import React from 'react'
+// function GrandChildComponent(props){
 //   return(
 //     <div>
-//       <h2>Notes App</h2>
+//       <h3>GrandChildComponent</h3>
+//       <p>{props.message}</p>
 //     </div>
-    
 //   )
 // }
 
-// function Notes(){
+// function ChildComponent(props){
 //   return(
 //     <div>
-//       <h2>Notes Component</h2>
+//       <h2>Child Component</h2>
+//       <p>{props.message }</p>
+//       <GrandChildComponent message={props.message}/>
 //     </div>
-    
-//   )
-// }
-
-// function Users(){
-//   return(
-//     <div>
-//       <h2>Users App</h2>
-//     </div>
-    
 //   )
 // }
 // function App() {
-//   const [page,setPage] = useState('home')
-  
-//   const content = () =>{
-//     if(page == 'home'){
-//       return <Home />
-//     } else if (page == 'notes') {
-//       return <Notes/>
-//     } else if (page == 'users') {
-//       return <Users />
-//     }
-//   };
+//   // parent component
+//   const message = "Hello, Child!"
 
-//   const toPage = (page) => (event) => {
-    
-//     event.preventDefault()
-//     setPage(page)
-//   }
-  
-//   const padding ={padding : 10}
 //   return (
 //     <div>
-//       <div>
-//         <a href= ' ' style = {padding} onClick = {toPage('home')} >home</a>
-//         <a href= ' ' style = {padding} onClick = {toPage('notes')} >notes</a>
-//         <a href= ' ' style = {padding} onClick = {toPage('users')} > Users</a>
-//       </div>
-
-//       {content()}
+//       <h1>Parent Component</h1>
+//       <ChildComponent message = {message}/>
 //     </div>
 //   )
 // }
 
 // export default App
 
+// TOPIC: AVOIDING PROPS DRILLING USING UseContext(Hook) method
 
-// TOPIC : WITH ROUTER
+// import React, { createContext, useContext, useState } from 'react'
 
-// import React, {useState} from 'react'
-// import {Link, BrowserRouter as Router, Routes, Route } from 'react-router-dom'
+// // create a context
+// const MssageContext = createContext();
 
-// function Home(){
+// function GrandChildComponent(){
+//   const message = useContext(MssageContext)
 //   return(
 //     <div>
-//       <h2>Notes App</h2>
+//       <h3>Grand Child Component</h3>
+//       <p>{message}</p>
 //     </div>
-    
 //   )
 // }
 
-// function Notes(){
+// function ChildComponent(){
+//   const message = useContext(MssageContext)
 //   return(
 //     <div>
-//       <h2>Notes Component</h2>
+//       <h2>Child Component</h2>
+//       <p>{message}</p>
+//       <GrandChildComponent/>
 //     </div>
-    
 //   )
 // }
 
-// function Users(){
-//   return(
-//     <div>
-//       <h2>Users App</h2>
-//     </div>
-    
-//   )
-// }
 // function App() {
-//   const [page,setPage] = useState('home')
-  
-//   const padding ={padding : 10}
+// //  const [message,setMessage] = useState('Hello from App')
+//  const message = "HELLO FROM APP"
 //   return (
-//       <Router>
-//       <div>
-//         <Link to ='/' style = {padding} >home</Link>
-//         <Link to ='/notes' style = {padding}>notes</Link>
-//         <Link to = '/users' style = {padding}>users</Link>
-//       </div>
+//     <div>
+//       <h1>Parent Component</h1>
+//       <MssageContext.Provider value={message} >
+//     <ChildComponent/>
+//       </MssageContext.Provider>
+//     </div>
+//   )
+// }
 
-//       <Routes>
-//         <Route path = '/users' element = {<Users/>} />
-//         <Route path = '/notes' element = {<Notes/>} />
-//         <Route path = '/' element = {<Home/>} />
-//       </Routes>
+// export default App
+
+// TOPIC: SESSION TASK- PROFILE NAME CHANGES
+
+import React from 'react'
+import { useContext } from 'react'
+import { useState } from 'react'
+import { createContext } from 'react'
+
+const profileContext = createContext()
+
+function Profile(){
+  const{profileName,setProfileName} = useContext(profileContext)
+  
+  let onChangeEvent = (event) => {
+    setProfileName(event.target.value)
+    // console.log(event.target.value)
+  }
+
+  return(
+    <div>
+      <h2>Profile Name : {profileName}</h2>
+      <input type = 'text' value = {profileName} onChange={onChangeEvent}/>
+
       
-//       </Router>
-//   )
-// }
-
-// export default App
-
-// TOPIC : USING PASSING PARAMETERS
-
-import React, {useState} from 'react'
-import {Link, BrowserRouter as Router, Routes, Route, useParams } from 'react-router-dom'
-
-function Home(){
-  return(
-    <div>
-      <h2>Notes App</h2>
     </div>
-    
   )
 }
 
-function Note({notes}){
-  const id = useParams().id
-  const note = notes.find(n => n.id === Number(id))
-  return(
-    <div>
-      <h2>{note.content}</h2>
-    </div>
-    
-  )
-}
-
-function Notes({notes}){
-  return(
-    <div>
-      <h2>Notes</h2>
-      <ul>
-        {
-          notes.map(note =>
-            <li Key= {note.id}><Link to={`/notes/${note.id}`}>{note.content}</Link></li>
-        )
-        }
-      </ul>
-    </div>
-    
-  )
-}
-
-function Users(){
-  return(
-    <div>
-      <h2>Users App</h2>
-    </div>
-    
-  )
-}
 function App() {
 
-  const notes = [
-    {
-      id : 1,
-      content : 'Javascript'
-    },
-    {
-      id : 2 ,
-      content : 'ReactJS'
-    },
-    {
-      id : 3,
-      content : 'NodeJS'
-    },
-  ];  
-  
-  
-  const padding ={padding : 10}
+  const [profileName,setProfileName] = useState('')
   return (
-      <Router>
-      <div>
-        <Link to ='/' style = {padding} >home</Link>
-        <Link to ='/notes' style = {padding}>notes</Link>
-        <Link to = '/users' style = {padding}>users</Link>
-      </div>
-
-      <Routes>
-        <Route path='/notes/:id' element = { <Note notes = {notes}/>}/>
-        <Route path = '/users' element = {<Users/>} />
-        <Route path = '/notes' element = {<Notes notes = {notes}/>} />
-        <Route path = '/' element = {<Home/>} />
-      </Routes>
-      
-      </Router>
+    <div>
+      <profileContext.Provider value ={{profileName,setProfileName}}>
+        <Profile/>
+      </profileContext.Provider>
+    </div>
   )
 }
 
 export default App
-
