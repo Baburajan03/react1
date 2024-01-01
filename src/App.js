@@ -1,120 +1,228 @@
-// DAY 8
+// TOPIC : UseRef  HOOK : to create a mutable reference to an element or a value that persits
 
-// TOPIC : PROPS DRILLING
+// Example 1
 
 // import React from 'react'
-// function GrandChildComponent(props){
-//   return(
-//     <div>
-//       <h3>GrandChildComponent</h3>
-//       <p>{props.message}</p>
-//     </div>
-//   )
-// }
+// import { useRef } from 'react';
 
-// function ChildComponent(props){
-//   return(
-//     <div>
-//       <h2>Child Component</h2>
-//       <p>{props.message }</p>
-//       <GrandChildComponent message={props.message}/>
-//     </div>
-//   )
-// }
 // function App() {
-//   // parent component
-//   const message = "Hello, Child!"
-
+//   const inputRef = useRef(null);
+//   let handleButton = () =>{
+//     inputRef.current.focus()
+//     // console.log(inputRef.current)
+//   }
 //   return (
 //     <div>
-//       <h1>Parent Component</h1>
-//       <ChildComponent message = {message}/>
+//       <input type = 'text' ref={inputRef}/>
+//       <button onClick = {handleButton}>Focus Input</button>
 //     </div>
 //   )
 // }
 
 // export default App
 
-// TOPIC: AVOIDING PROPS DRILLING USING UseContext(Hook) method
+// Example 2
 
-// import React, { createContext, useContext, useState } from 'react'
-
-// // create a context
-// const MssageContext = createContext();
-
-// function GrandChildComponent(){
-//   const message = useContext(MssageContext)
-//   return(
-//     <div>
-//       <h3>Grand Child Component</h3>
-//       <p>{message}</p>
-//     </div>
-//   )
-// }
-
-// function ChildComponent(){
-//   const message = useContext(MssageContext)
-//   return(
-//     <div>
-//       <h2>Child Component</h2>
-//       <p>{message}</p>
-//       <GrandChildComponent/>
-//     </div>
-//   )
-// }
+// import React, { useRef } from 'react'
+// import { useState } from 'react'
 
 // function App() {
-// //  const [message,setMessage] = useState('Hello from App')
-//  const message = "HELLO FROM APP"
+//   const inputRef = useRef(null)
+//   const [text,setText] = useState('no text')
+
+//   let handleButton = ()=>{
+//       let value = inputRef.current.value
+//       setText(value)
+//   }
 //   return (
 //     <div>
-//       <h1>Parent Component</h1>
-//       <MssageContext.Provider value={message} >
-//     <ChildComponent/>
-//       </MssageContext.Provider>
+//       <input type ='text' ref = {inputRef}/>
+//       <button onClick={handleButton}>Get Text</button>
+//       <p>Entered Text: {text}</p>
+//     </div>
+//   )
+// }  
+
+// export default App
+
+// Example 3
+
+// import React, { useEffect, useRef } from 'react'
+
+// function App() {
+ 
+//   const inputRef = useRef(null)
+//   useEffect(() =>
+//   {
+//     inputRef.current.focus()
+//   }, [])
+//   return (
+//     <div>
+//       <input type='text' ref={inputRef} />
 //     </div>
 //   )
 // }
 
 // export default App
 
-// TOPIC: SESSION TASK- PROFILE NAME CHANGES
+//   Example 4
 
-import React from 'react'
-import { useContext } from 'react'
-import { useState } from 'react'
-import { createContext } from 'react'
+// import React from 'react'
+// import { useRef } from 'react'
+// import { useState } from 'react'
 
-const profileContext = createContext()
+// function App() {
 
-function Profile(){
-  const{profileName,setProfileName} = useContext(profileContext)
-  
-  let onChangeEvent = (event) => {
-    setProfileName(event.target.value)
-    // console.log(event.target.value)
-  }
+//     const [count,setCount] = useState(0)
+//     const previousCountRef = useRef(null)
 
-  return(
-    <div>
-      <h2>Profile Name : {profileName}</h2>
-      <input type = 'text' value = {profileName} onChange={onChangeEvent}/>
+//     let handleIncrement = () =>{
+//         previousCountRef.current = count
+//         setCount((count) => count + 1)
+//     }
+//      return (
+//     <div>
+//         <p>Current Count : {count}</p>
+//         <p>Previous Count : {previousCountRef.current}</p>
+//         <button onClick = {handleIncrement}>Increment</button>
+//     </div>
+//   )
+// }
 
-      
-    </div>
-  )
-}
+// export default App
 
-function App() {
+// TOPIC : useEffect examples
+// WITHOUT DEPENDENCY
 
-  const [profileName,setProfileName] = useState('')
-  return (
-    <div>
-      <profileContext.Provider value ={{profileName,setProfileName}}>
-        <Profile/>
-      </profileContext.Provider>
-    </div>
-  )
-}
+// import React, { useEffect } from 'react'
 
-export default App
+// function App() {
+
+//     // this effect runs once change, after the component mounts
+// useEffect(() => {
+//     console.log('component mounted')
+// },[])
+//   return (
+//     <div>
+//         APP COMPONENT
+//     </div>
+//   )
+// }
+
+// export default App
+
+// with single dependency
+
+// import React, { useEffect, useState } from 'react'
+
+// function App() {
+//     const [count,setCount] = useState(0)
+
+//     // runs first time
+// useEffect(() => {
+//     console.log('count:',count)
+// },[count])
+
+// let buttonClick = () => {
+//     setCount(count +1)
+// }
+//   return (
+//     <div>
+//         <p> Count : {count}</p>
+//         <button onClick= {buttonClick}>Increment</button>
+//     </div>
+//   )
+// }
+
+// export default App
+
+
+// TOPIC: useReducer hook : complex state management ( multiple actions or transitions)
+// import React from 'react'
+// import { useState } from 'react'
+
+
+// function App() {
+//     const [count,setCount] = useState(0)
+//   return (
+//     <div>
+// <p>Count : {count} </p>
+// <button onClick = {() => setCount(count +1)}>Increment</button>
+// <button onClick = {() => setCount(count -1)}>Decrement</button>
+// <button onClick = {() => setCount(0)}>Reset</button>
+//     </div>
+//   )
+// }
+
+// export default App
+
+// Example 1
+
+// import React from 'react'
+// import { useReducer } from 'react'
+// import { useState } from 'react'
+
+// // set initial state
+// const initialState = {count : 0}
+
+// function rreducer(state,action){
+//     switch (action.type) {
+//         case 'Increment' :
+//             return {count : state.count + 1};
+//         case 'Decrement' :
+//             return {count : state.count -1};
+//         case 'reset' :
+//             return {count : 0};
+//         default:
+//             throw  new Error();
+//     }
+// }
+
+// function App() {
+
+// const [state,dispatch]  = useReducer(rreducer,initialState);
+
+//   return (
+//     <div>
+// <p>Count : {state.count} </p>
+// <button onClick = {() => dispatch({type : 'Increment'})}>Increment</button>
+// <button onClick = {() => dispatch({type : 'Decrement'})}>Decrement</button>
+// <button onClick = {() => dispatch({type : 'reset'})}>Reset</button>
+//     </div>
+//   )
+// }
+
+// export default App
+
+
+// EXAMPLE 2
+
+// import React, { useReducer } from 'react'
+
+// const initialState = {isActive : false}
+
+// function reducer(state,action){
+//     switch(action.type){
+//         case 'toggle' :
+//             return {isActive : !state.isActive}
+//     }
+// }
+
+// function App() {
+
+//     const [state,dispatch] = useReducer(reducer,initialState)
+//   return (
+//     <div>
+//         <p>Active : {state.isActive ? 'Yes' : 'No'}</p>
+//         <button onClick = {() => dispatch ({type : 'toggle'})}>Toggle</button>
+//     </div>
+//   )
+// }
+
+// export default App
+
+
+
+
+
+
